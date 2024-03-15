@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
+import PropTypes from 'prop-types';
 import img1 from "../../public/Rectangle 34.png";
 import img2 from "../../public/Rectangle 35.png";
 import data from "../imgData";
@@ -6,6 +7,13 @@ import dragAndDrop from "../../public/dragandpaste.png";
 function Modal({ onClose,setfiles }) {
   let [files, setFiles] = useState(null);
   const inputRef = useRef();
+
+  Modal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    setfiles: PropTypes.func.isRequired
+  };
+  
+
   const handleClose = () => {
     onClose();
   };
@@ -50,9 +58,9 @@ function Modal({ onClose,setfiles }) {
               >
                 <path
                   stroke="currentColor"
-                  stroke-Linecap="round"
-                  stroke-Linejoin="round"
-                  stroke-Width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                 />
               </svg>
