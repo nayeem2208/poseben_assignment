@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import bulkEmail from "../../public/bulkemail1.png";
 import Modal from "./Modal";
 import { CircularProgressbar } from 'react-circular-progressbar';
