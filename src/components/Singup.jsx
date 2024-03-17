@@ -18,7 +18,7 @@ function Signup() {
     console.log(credentialResponse,'credentiall         llll')
     try {
 
-      let res = await axios.post('http://localhost:3000/api/GoogleSignup',{credentialResponse})
+      let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleSignup',{credentialResponse})
       console.log(res,'responseeeeeeeeeeeeeeeeeeeeeeeeeee')
       let token=res.data.token
       localStorage.setItem('token',token)
@@ -39,7 +39,7 @@ function Signup() {
       if ((email,password)) {
             if (passwordPattern.test(password)) {
                 try {
-                  let res = await axios.post('http://localhost:3000/api/signup',{
+                  let res = await axios.post('https://poseben-backend.onrender.com/api/signup',{
                     email,
                     password,
                   })
