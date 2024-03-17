@@ -16,7 +16,11 @@ export default function Login() {
     e.preventDefault();
     try {
       if ((email, password)) {
-        const res = await axios.post("http://localhost:3000/api/login", {
+        // const res = await axios.post("http://localhost:3000/api/login", {
+        //   email,
+        //   password,
+        // });
+           const res = await axios.post("https://poseben-backend.onrender.com/api/login", {
           email,
           password,
         });
@@ -35,7 +39,7 @@ export default function Login() {
 
   const authenticateData = async (credentialResponse) => {
     try {
-      let res = await axios.post('http://localhost:3000/api/GoogleLogin',{credentialResponse})
+      let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleLogin',{credentialResponse})
       let token=res.token
       localStorage.setItem('token',token)
       navigate("/home")
