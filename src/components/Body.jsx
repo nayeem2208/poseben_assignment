@@ -1,15 +1,34 @@
 import { useEffect, useState } from "react";
 import bulkEmail from "../../public/bulkemail1.png";
 import Modal from "./Modal";
-import { CircularProgressbar } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
+import { useUserState} from "../context/Context";
 
 function Body() {
   let [bulk, setBulk] = useState([]);
-  let [percentages,setPercentages]=useState([])
+  let [percentages, setPercentages] = useState([]);
   let [modalToggle, setModalToggle] = useState(false);
   const [uploadingIndex, setUploadingIndex] = useState(-1);
 
+  let navigate = useNavigate();
+  let { setUserDetails } = useUserState();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      let parsedToken;
+      try {
+        parsedToken = JSON.parse(storedToken);
+      } catch (error) {
+        parsedToken = storedToken;
+      }
+      setUserDetails(parsedToken);
+    } else {
+      navigate("/");
+    }
+  }, []);
 
   function HandleModalToggle() {
     setModalToggle(!modalToggle);
@@ -20,8 +39,8 @@ function Body() {
 
   const fileUpload = (file) => {
     setBulk((prevBulk) => [...prevBulk, file]);
-    setPercentages((prevPercentage)=>[...prevPercentage,0])
-    setUploadingIndex(percentages.length)
+    setPercentages((prevPercentage) => [...prevPercentage, 0]);
+    setUploadingIndex(percentages.length);
   };
 
   useEffect(() => {
@@ -30,14 +49,14 @@ function Body() {
         setPercentages((prevPercentages) => {
           const updatedPercentages = [...prevPercentages];
           if (updatedPercentages[uploadingIndex] < 100) {
-            updatedPercentages[uploadingIndex] += 10; 
+            updatedPercentages[uploadingIndex] += 10;
           } else {
-            clearInterval(interval); 
+            clearInterval(interval);
           }
           return updatedPercentages;
         });
-      }, 300); 
-      return () => clearInterval(interval); 
+      }, 300);
+      return () => clearInterval(interval);
     }
   }, [uploadingIndex]);
   return (
@@ -81,9 +100,15 @@ function Body() {
                   key={index}
                   className="bg-white rounded-lg mx-4 p-4 shadow-lg w-52 h-64 flex flex-col justify-center items-center"
                 >
-                 <h2>{data[0].name}</h2> 
-                 <CircularProgressbar value={percentages[index]} text={`${percentages[index]}%`} className="my-3" />
-                 <button className="bg-violet-600 text-white p-2 rounded-lg my-3">IMPORTING</button>
+                  <h2>{data[0].name}</h2>
+                  <CircularProgressbar
+                    value={percentages[index]}
+                    text={`${percentages[index]}%`}
+                    className="my-3"
+                  />
+                  <button className="bg-violet-600 text-white p-2 rounded-lg my-3">
+                    IMPORTING
+                  </button>
                 </div>
               ))}
             </div>
