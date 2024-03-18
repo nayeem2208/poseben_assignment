@@ -19,7 +19,7 @@ function Signup() {
     try {
 
       let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleSignup',{credentialResponse})
-      console.log(res,'responseeeeeeeeeeeeeeeeeeeeeeeeeee')
+      // let res=await axios.post('http://localhost:3000/api/GoogleSignup',{credentialResponse})
       let token=res.data.token
       localStorage.setItem('token',token)
       navigate("/home")
@@ -43,15 +43,21 @@ function Signup() {
                     email,
                     password,
                   })
-                  let token=res.data
-                  console.log(token,'token')
-                  setUserDetails(token)
-                  localStorage.setItem('token',JSON.stringify(token))
-                  navigate('/home')
+                  // let res = await axios.post('http://localhost:3000/api/signup',{
+                  //   email,
+                  //   password,
+                  // })
+                  console.log(res,'res')
+                  toast(res.data,5000)
+                  // let token=res.data
+                  // console.log(token,'token')
+                  // setUserDetails(token)
+                  // localStorage.setItem('token',JSON.stringify(token))
+                  navigate('/')
         
                 } catch (err) {
-                  console.log(err.data.err)
-                  toast.error(err.data.err || 'user already exist machaaa');
+                  console.log(err,'err')
+                  toast.error(err.response?.data.error);
                 }
             } else {
               toast.error("Please put a strong password(Minimum 6 including number and string)");

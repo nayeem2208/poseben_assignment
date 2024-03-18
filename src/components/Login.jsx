@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserState } from "../context/Context";
 import { toast } from "react-toastify";
@@ -8,9 +8,31 @@ import { GoogleLogin } from "@react-oauth/google";
 export default function Login() {
   let [email, setemail] = useState("");
   let [password, setPassword] = useState("");
-  let {  setUserDetails } = useUserState();
+  let { setUserDetails } = useUserState();
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  useEffect(() => {
+    async function verifyEmail(){
+      const queryParams = new URLSearchParams(location.search);
+      if (queryParams) {
+        const email = queryParams.get("email");
+        if (email) {
+          console.log(email,'emaileyyyy')
+          // let res=await axios.get(`http://localhost:3000/api/verifyEmail?email=${email}`);
+          let res=await axios.get(`https://poseben-backend.onrender.com/api/verifyEmail?email=${email}`);
+          console.log(res,'res')
+          // toast(res.data?.message)
+          let token = res.data;
+          setUserDetails(token);
+          localStorage.setItem("token", JSON.stringify(token));
+          navigate("/home");
+        }
+      }
+    }
+  verifyEmail()
+  }, [location.search]);
 
   const submitHander = async (e) => {
     e.preventDefault();
@@ -33,19 +55,22 @@ export default function Login() {
         toast.error("Please give a valid input");
       }
     } catch (err) {
-      toast.error(err, 2000);
+      toast.error(err.response?.data.error);
     }
   };
 
   const authenticateData = async (credentialResponse) => {
     try {
       let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleLogin',{credentialResponse})
-      let token=res.token
-      localStorage.setItem('token',token)
-      navigate("/home")
+      // let res = await axios.post("http://localhost:3000/api/GoogleLogin", {
+      //   credentialResponse,
+      // });
+      let token = res.token;
+      localStorage.setItem("token", token);
+      navigate("/home");
     } catch (err) {
-        console.log(err)
-      toast.error(err.response.data);
+      console.log(err);
+      toast.error(err.response?.data.error);
     }
   };
 
