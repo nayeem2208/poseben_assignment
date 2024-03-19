@@ -6,7 +6,7 @@ import drawer from '../../public/drawer.png'
 import APi from '../../public/Ellipse 5.png'
 import { IoIosArrowDown } from "react-icons/io";
 import { useUserState} from '../context/Context'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 function Header() {
   let {userDetails,setUserDetails}=useUserState()
   let navigate = useNavigate();
@@ -25,8 +25,8 @@ function Header() {
       <div>
         {userDetails&&
         <ul className='flex text-slate-800'>
-            <li className='flex h-full items-center hover:bg-gray-100 rounded-lg py-1'><img src={bulkEmail} alt="" className='w-9 mx-2 ' /><p className='mr-3'>Bulk</p></li>
-            <li className='flex items-center hover:bg-gray-100 rounded-lg py-1'><img src={verified} alt="" className='w-9 mx-2' /><p className='mr-3'>Monitor</p></li>
+            <Link to={'/home'}><li className='flex h-full items-center hover:bg-gray-100 rounded-lg py-1'><img src={bulkEmail} alt="" className='w-9 mx-2 ' /><p className='mr-3'>Bulk</p></li></Link>
+            <Link to={'/validate'}><li className='flex items-center hover:bg-gray-100 rounded-lg py-1'><img src={verified} alt="" className='w-9 mx-2' /><p className='mr-3'>Monitor</p></li></Link>
             <li className='flex items-center hover:bg-gray-100 rounded-lg py-1'><img src={email} alt="" className='w-9 mx-2' /><p className='mr-3'>Single</p></li>
             <li className='flex items-center hover:bg-gray-100 rounded-lg py-1'><img src={drawer} alt="" className='w-9 mx-2' /><p className='mr-3'>Deliverability</p></li>
             <li className='flex items-center hover:bg-gray-100 rounded-lg py-1'><img src={APi} alt="" className='w-9 mx-2' /><p className='mr-3'>API</p></li>

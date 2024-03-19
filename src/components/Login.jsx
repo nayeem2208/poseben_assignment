@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useUserState } from "../context/Context";
 import { toast } from "react-toastify";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
+import { FcGoogle } from "react-icons/fc";
+import axiosInstance from "../axiosInstance";
 
 export default function Login() {
   let [email, setemail] = useState("");
@@ -20,8 +22,8 @@ export default function Login() {
         const email = queryParams.get("email");
         if (email) {
           console.log(email,'emaileyyyy')
-          // let res=await axios.get(`http://localhost:3000/api/verifyEmail?email=${email}`);
-          let res=await axios.get(`https://poseben-backend.onrender.com/api/verifyEmail?email=${email}`);
+          let res=await axiosInstance.get(`/verifyEmail?email=${email}`);
+          // let res=await axios.get(`https://poseben-backend.onrender.com/api/verifyEmail?email=${email}`);
           console.log(res,'res')
           // toast(res.data?.message)
           let token = res.data;
@@ -38,14 +40,14 @@ export default function Login() {
     e.preventDefault();
     try {
       if ((email, password)) {
-        // const res = await axios.post("http://localhost:3000/api/login", {
-        //   email,
-        //   password,
-        // });
-           const res = await axios.post("https://poseben-backend.onrender.com/api/login", {
+        const res = await axiosInstance.post("/login", {
           email,
           password,
         });
+        //    const res = await axios.post("https://poseben-backend.onrender.com/api/login", {
+        //   email,
+        //   password,
+        // });
         toast("Authentication success", 2000);
         let token = res.data;
         setUserDetails(token);
@@ -59,12 +61,19 @@ export default function Login() {
     }
   };
 
+  // const login = useGoogleLogin({
+  //   onSuccess: tokenResponse =>{
+  //     console.log(tokenResponse)
+  //      authenticateData(tokenResponse)
+  //   }
+  // });
+
   const authenticateData = async (credentialResponse) => {
     try {
-      let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleLogin',{credentialResponse})
-      // let res = await axios.post("http://localhost:3000/api/GoogleLogin", {
-      //   credentialResponse,
-      // });
+      // let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleLogin',{credentialResponse})
+      let res = await axiosInstance.post("/GoogleLogin", {
+        credentialResponse,
+      });
       let token = res.token;
       localStorage.setItem("token", token);
       navigate("/home");
@@ -114,6 +123,7 @@ export default function Login() {
             </button>
             <div className="my-2 w-full  flex justify-center">
               <GoogleLogin
+              buttonText="Sign in with Google"
                 onSuccess={(credentialResponse) => {
                   console.log(credentialResponse);
                   authenticateData(credentialResponse);
@@ -122,6 +132,7 @@ export default function Login() {
                   console.log("Login Failed");
                 }}
               />
+              {/* <button onClick={() => login()} className="rounded-lg py-1 w-3/5 border border-gray-400 flex justify-center">Sign in with Google <FcGoogle className="mx-2 w-5 h-5"/></button> */}
             </div>
             <Link
               className="block text-gray-500 text-center mb-3 mt-3 text-sm"

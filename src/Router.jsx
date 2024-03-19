@@ -3,6 +3,7 @@ import Body from './components/Body'
 import Login from './components/Login'
 import Authentication from './components/Authentication'
 import Singup from './components/Singup'
+import Validate from './components/Validate'
 
 function Router() {
   return (
@@ -12,6 +13,7 @@ function Router() {
         <Route path='/signup' element={<Singup/>}/>
     </Route>
     <Route path='/home' element={<Body/>}/>
+    <Route path='/validate' element={<Validate/>}/>
     </Routes>
   )
 }
