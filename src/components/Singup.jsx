@@ -4,6 +4,7 @@ import axios from 'axios'
 import { toast } from "react-toastify";
 import { useUserState } from "../context/Context";
 import { GoogleLogin } from "@react-oauth/google";
+import axiosInstance from "../axiosInstance";
 
 function Signup() {
   let [email, setEmail] = useState("");
@@ -18,8 +19,8 @@ function Signup() {
     console.log(credentialResponse,'credentiall         llll')
     try {
 
-      let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleSignup',{credentialResponse})
-      // let res=await axios.post('http://localhost:3000/api/GoogleSignup',{credentialResponse})
+      // let res = await axios.post('https://poseben-backend.onrender.com/api/GoogleSignup',{credentialResponse})
+      let res=await axiosInstance.post('/GoogleSignup',{credentialResponse})
       let token=res.data.token
       localStorage.setItem('token',token)
       navigate("/home")
@@ -39,14 +40,14 @@ function Signup() {
       if ((email,password)) {
             if (passwordPattern.test(password)) {
                 try {
-                  let res = await axios.post('https://poseben-backend.onrender.com/api/signup',{
-                    email,
-                    password,
-                  })
-                  // let res = await axios.post('http://localhost:3000/api/signup',{
+                  // let res = await axios.post('https://poseben-backend.onrender.com/api/signup',{
                   //   email,
                   //   password,
                   // })
+                  let res = await axiosInstance.post('/signup',{
+                    email,
+                    password,
+                  })
                   console.log(res,'res')
                   toast(res.data,5000)
                   // let token=res.data
